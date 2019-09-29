@@ -11,10 +11,13 @@ def sel_directory_files():
     global fbxFiles
     global dirPath
     # Select folder
-    cmds.fileDialog2(dir='path/to/dir', dialogStyle=2, fileMode=0)  # Select my directory
-    dirPath = Dir
-    fbxFiles = cmds.getFileList(folder=dir, filespec='*.fbx')  # Get Fbx In directory
-
+    Dir = cmds.fileDialog2(dir='path/to/dir', dialogStyle=2, fileMode=2)  # Select my directory
+    print(dir)
+    myString = Dir[0]
+    myString = myString.replace("/", "\\")
+    dirPath =  myString 
+    print(dirPath)
+    fbxFiles = cmds.getFileList(folder=dirPath, filespec='*.fbx')  # Get Fbx In directory
 
 def deleteTranslateBones():
     '''Delete Translate bones'''
@@ -46,11 +49,10 @@ def deleteConnection(attr):
 def processFbx():
     for i in fbxFiles:
         newscene()
-        importFbx(dir + "\\" + i)
+        importFbx(dirPath + "\\" + i)
         deleteTranslateBones()
         exportFbx(dir + "\\" + i)
-        print(dir + "\\" + i)
-
+        print(dirPath + "\\" + i)
 
 def newscene():
     cmds.file(f=True, new=True)
